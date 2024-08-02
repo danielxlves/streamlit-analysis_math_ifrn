@@ -27,7 +27,6 @@ def main():
     st.header('SituacaoMatriculaPeriodo.json')
     st.write(situacao_matricula_periodo_df.head(2))
 
-    st.title('Análise de dados das disciplinas de matematica (i, ii, iii) dos cursos integrados do IFRN.')
     option = st.selectbox(
         'Escolha um dataset para explorar:',
         ['Disciplina', 'MatriculaPeriodo', 'Notas', 'SituacaoMatriculaPeriodo']
