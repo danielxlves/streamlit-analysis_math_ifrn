@@ -1,61 +1,28 @@
 import streamlit as st
 import pandas as pd
 import io
+import plotly.express as px
 
 def load_data():
-    disciplina_df = pd.read_json('Disciplina.json')
-    matricula_periodo_df = pd.read_json('MatriculaPeriodo.json')
-    notas_df = pd.read_json('Notas.json')
-    situacao_matricula_periodo_df = pd.read_json('SituacaoMatriculaPeriodo.json')
-    
-    return disciplina_df, matricula_periodo_df, notas_df, situacao_matricula_periodo_df
+    dados_mergado = pd.read_json('dados_workflow_ivan.json')
+    return dados_mergado
 
 def main():
-    st.title('Análise de dados das disciplinas de matematica (i, ii, iii) dos cursos integrados do IFRN.')
-    
-    disciplina_df, matricula_periodo_df, notas_df, situacao_matricula_periodo_df = load_data()
-    
-    st.header('Disciplina.json')
-    st.write(disciplina_df.head(2))
-    
-    st.header('MatriculaPeriodo.json')
-    st.write(matricula_periodo_df.head(2))
-    
-    st.header('Notas.json')
-    st.write(notas_df.head(2))
-    
-    st.header('SituacaoMatriculaPeriodo.json')
-    st.write(situacao_matricula_periodo_df.head(2))
+    dados_mergado = load_data()
+    matematica_i = dados_mergado["MatemticaI120H"].dropna()
 
-    option = st.selectbox(
-        'Escolha um dataset para explorar:',
-        ['Disciplina', 'MatriculaPeriodo', 'Notas', 'SituacaoMatriculaPeriodo']
-    )
+    st.title('Análise de dados da disciplina \"Matemática I\" dos cursos integrados do IFRN.')
+
+    buffer = io.StringIO()
+    dados_mergado.info(buf=buffer)
+    s = buffer.getvalue()
+    st.code("Informações do dataset com os dados combinados:\n" + s)
+
+    st.header('Series da disciplina de \"Matemática I\", filtrada dos dados combinados.')    
+    st.dataframe(matematica_i)
     
-    if option == 'Disciplina':
-        st.dataframe(disciplina_df)
-        buffer = io.StringIO()
-        disciplina_df.info(buf=buffer)
-        s = buffer.getvalue()
-        st.code("Informações do dataset 'Disciplina':\n" + s)
-    elif option == 'MatriculaPeriodo':
-        st.dataframe(matricula_periodo_df)
-        buffer = io.StringIO()
-        matricula_periodo_df.info(buf=buffer)
-        s = buffer.getvalue()
-        st.code("Informações do dataset 'MatriculaPeriodo':\n" + s)
-    elif option == 'Notas':
-        st.dataframe(notas_df)
-        buffer = io.StringIO()
-        notas_df.info(buf=buffer)
-        s = buffer.getvalue()
-        st.code("Informações do dataset 'Notas':\n" + s)
-    elif option == 'SituacaoMatriculaPeriodo':
-        st.dataframe(situacao_matricula_periodo_df)
-        buffer = io.StringIO()
-        situacao_matricula_periodo_df.info(buf=buffer)
-        s = buffer.getvalue()
-        st.code("Informações do dataset 'SituacaoMatriculaPeriodo':\n" + s)
+    fig = px.histogram(matematica_i, x=matematica_i, title='Distribuição de Notas em Matemática I')
+    st.plotly_chart(fig)
         
 if __name__ == "__main__":
     main()
