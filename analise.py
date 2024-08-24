@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import io
@@ -17,33 +16,41 @@ def main():
 
     matricula, notas, disciplina, situacao = load_data()
 
-    #st.text("Aluno")
-    #st.dataframe(alunos)
-    #st.text("Matricula")
-    #st.dataframe(matricula)
-    #st.text("Notas")
-    #st.dataframe(notas)
-    #st.text("Disciplinas")
-    #st.dataframe(disciplina)
-    #st.text("Situacao")
-    #st.dataframe(situacao)
+    #print("Aluno")
+    #print(alunos)
+    #print("Matricula")
+    #print(matricula)
+    #print("Notas")
+    #print(notas)
+    #print("Disciplinas")
+    #print(disciplina)
+    #print("Situacao")
+    #print(situacao)
 
     # Merges/Joins
 
     merge_matricula_situacao = pd.merge(matricula, situacao, left_on='situacao_id', right_on='id', suffixes=('_matricula', '_situacao'))
     
-    st.text("Merge matricula -> situacao")
-    
-    st.dataframe(merge_matricula_situacao)
+    print("Merge matricula -> situacao")
+    print(merge_matricula_situacao)
 
     merge_matricula_situacao_notas = pd.merge(notas, merge_matricula_situacao, left_on='situacao_id', right_on='id_situacao', suffixes=('', '_notas'))
     
+    print("Notas -> Merge matricula situacao ")
+    print(merge_matricula_situacao_notas)
+    
+
     #Merge final
     merge_matricula_situacao_notas_disciplina = pd.merge(merge_matricula_situacao_notas, disciplina, left_on='situacao_id', right_on='id', suffixes=('', '_disciplina'))
-
-    #st.dataframe(merge_matricula_situacao_notas_disciplina)
+    
+    print("Disciplina -> Merge matricula situacao notas ")
+    print(merge_matricula_situacao_notas_disciplina)
 
 if __name__ == "__main__":
     main()
 
 
+
+
+
+# %%
