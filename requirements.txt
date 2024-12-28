@@ -1,5 +1,9 @@
+pycaret   
+catboost                                                                                                                       
 numpy
 pandas
 matplotlib 
 plotly
 ipython
+scikit-learn
+streamlit
